@@ -26,6 +26,8 @@ jobs:
       - name: Build and run containers
         run: docker compose up -d --build
 
+      - name: check environment variables
+        run: cat .env
       - name: Run tests
         run: docker image list
 
