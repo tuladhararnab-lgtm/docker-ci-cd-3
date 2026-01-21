@@ -5,10 +5,14 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read          # Required to checkout and read repo files
+      security-events: write
 
     steps:
       - name: Checkout code
@@ -35,6 +39,15 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/docker-demo-app:latest
             ${{ secrets.DOCKER_USERNAME }}/docker-demo-app:${{ github.sha }}
+      - name: trivy-scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ secrets.DOCKER_USERNAME }}/docker-demo-app:latest
+          format: 'table'
+          exit-code: '1'
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+          ignore-unfixed: true
 
       - name: Build and run containers
         env:
