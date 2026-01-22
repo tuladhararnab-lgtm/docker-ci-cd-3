@@ -51,5 +51,25 @@ To get the latest commit SHA for GitHub Actions:
 git ls-remote https://github.com/sonarsource/sonarqube-quality-gate-action.git HEAD | awk '{print $1}'
 ```
 
+## Git Commands
+
+### Push changes to repository
+```bash
+git add .
+git commit -m "Your commit message"
+git push origin main
+```
+
+### Create and push a tag
+```bash
+git tag -a v1.0.0 -m "Release version 1.0.0"
+git push origin v1.0.0
+```
+
+### Push all tags
+```bash
+git push origin --tags
+```
+
 
 # hey this is new
